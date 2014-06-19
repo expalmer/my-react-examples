@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React - Example 1</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="http://fb.me/react-0.10.0.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+</head>
+<body>
+<script type="text/jsx">
+/** @jsx React.DOM */
+var everybody = [
+    {   box: "Movie",
+        form: "What's you think about the Star Wars movies ?",
+        list: {
+                name: "Star Wars Comments",
+                comments: [
+                        { comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
+                        { comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
+                        { comment: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum suscipit laborum dolores eius ea eaque, assumenda quae aliquam neque aspernatur, commodi labore molestias nihil temporibus! Laborum tenetur sequi, culpa ipsa alias minima. Ut fugit quibusdam vitae cupiditate expedita numquam iusto.' }
+                    ]
+        }
+    },
+    {   box: "Sports",
+        form: "Do you believe that Anderson Silva return to fight?",
+        list: {
+                name: "MMA Comments",
+                comments: [
+                        { comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
+                        { comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
+                        { comment: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
+                        { comment: '4 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum suscipit laborum dolores eius ea eaque, assumenda quae aliquam neque aspernatur, commodi labore molestias nihil temporibus! Laborum tenetur sequi, culpa ipsa alias minima. Ut fugit quibusdam vitae cupiditate expedita numquam iusto.' }
+                    ]
+        }
+    },
+    {   box: "Development",
+        form: "AngularJS or ReactJs ? Google or Facebook ?",
+        list: {
+                name: "Programmer's Comments",
+                comments: [
+                        { comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
+                        { comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' }
+                    ]
+        }
+    }
+];
+
+var Comment = React.createClass({
+    onClickLocal: function() {
+        this.props.onClickProp( this.props.commentIdx );
+    },
+    render: function() {
+        return (
+            <div className="comment">
+                <small>Comment</small>
+                <span className="remove" onClick={this.onClickLocal}>x</span>
+                {this.props.children}
+            </div>
+        );
+    }
+});
+
+var CommentList = React.createClass({
+    onClickHere: function( commentIdx ) {
+        var comments = this.state.comments.splice( commentIdx,1 );
+        this.setState( { comments: this.state.comments } );
+    },
+    getInitialState: function() {
+        return { comments: this.props.list.comments };
+    },
+    render: function() {
+        var that = this;
+        var commentNodes = this.state.comments.map( function( comment, idx ) {
+            return <Comment commentIdx={idx} onClickProp={that.onClickHere}>{comment.comment}</Comment>
+        });
+
+        return (
+            <div className="comment-list">
+                <h2><small>CommentList</small> {this.props.list.name}</h2>
+                {commentNodes}
+            </div>
+        );
+    }
+});
+
+var CommentForm = React.createClass({
+    onSubmitLocal: function() {
+        var comment = this.refs.comment.getDOMNode().value.trim();
+        if ( !!comment ) {
+            this.refs.comment.getDOMNode().value = '';
+            this.props.onSubmitProp( comment );
+        }
+        return false;
+    },
+    render: function() {
+        return (
+            <form className="comment-form" onSubmit={this.onSubmitLocal}>
+                <h2><small>CommentForm</small> {this.props.form}</h2>
+                <textarea ref="comment"></textarea>
+                <input type="submit" value="Submit Now" />
+            </form>
+        );
+    }
+});
+
+var CommentBox = React.createClass({
+    onSubmitHere: function( comment ) {
+        this.state.list.comments.unshift({ comment: comment });
+        this.setState( { "list": this.state.list } );
+    },
+    getInitialState: function() {
+        return { list : this.props.item.list }
+    },
+    render: function() {
+        return (
+            <div className="comment-box">
+                <h2><small>CommentBox</small> {this.props.item.box}</h2>
+                <CommentForm form={this.props.item.form} onSubmitProp={this.onSubmitHere}/>
+                <CommentList list={this.state.list} />
+            </div>
+        );
+    }
+});
+
+var Wrapper = React.createClass({
+    getInitialState: function() {
+        return { items: everybody };
+    },
+    render: function() {
+
+        var commentNodes = this.state.items.map(function( item ) {
+            return <CommentBox item={item} />;
+        });
+
+        return (
+            <div>
+                {commentNodes}
+            </div>
+        );
+    }
+});
+
+React.renderComponent(
+    <Wrapper />,
+    document.body
+);
+</script>
+</html>
