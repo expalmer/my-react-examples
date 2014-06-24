@@ -6,55 +6,60 @@
     <link rel="stylesheet" href="style.css">
     <script src="http://fb.me/react-0.10.0.js"></script>
     <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 </head>
 <body>
 <script type="text/jsx">
 /** @jsx React.DOM */
-var everybody = [
-    {   box: "Movie",
+
+// silly variable to get new ids for comments
+var nextId = 99;
+
+var sections = [
+    {   id: 1,
+        box: "Movie",
         form: "What's you think about the Star Wars movies ?",
         list: {
                 name: "Star Wars Comments",
                 comments: [
-                        { comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
-                        { comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
-                        { comment: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum suscipit laborum dolores eius ea eaque, assumenda quae aliquam neque aspernatur, commodi labore molestias nihil temporibus! Laborum tenetur sequi, culpa ipsa alias minima. Ut fugit quibusdam vitae cupiditate expedita numquam iusto.' }
+                        { id: 1, comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
+                        { id: 2, comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
+                        { id: 3, comment: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum suscipit laborum dolores eius ea eaque, assumenda quae aliquam neque aspernatur, commodi labore molestias nihil temporibus! Laborum tenetur sequi, culpa ipsa alias minima. Ut fugit quibusdam vitae cupiditate expedita numquam iusto.' }
                     ]
         }
     },
-    {   box: "Sports",
+    {   id: 2,
+        box: "Sports",
         form: "Do you believe that Anderson Silva return to fight?",
         list: {
                 name: "MMA Comments",
                 comments: [
-                        { comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
-                        { comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
-                        { comment: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
-                        { comment: '4 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum suscipit laborum dolores eius ea eaque, assumenda quae aliquam neque aspernatur, commodi labore molestias nihil temporibus! Laborum tenetur sequi, culpa ipsa alias minima. Ut fugit quibusdam vitae cupiditate expedita numquam iusto.' }
+                        { id: 1, comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
+                        { id: 2, comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
+                        { id: 3, comment: '3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' },
+                        { id: 4, comment: '4 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum suscipit laborum dolores eius ea eaque, assumenda quae aliquam neque aspernatur, commodi labore molestias nihil temporibus! Laborum tenetur sequi, culpa ipsa alias minima. Ut fugit quibusdam vitae cupiditate expedita numquam iusto.' }
                     ]
         }
     },
-    {   box: "Development",
+    {   id: 3,
+        box: "Development",
         form: "AngularJS or ReactJs ? Google or Facebook ?",
         list: {
                 name: "Programmer's Comments",
                 comments: [
-                        { comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
-                        { comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' }
+                        { id: 1, comment: '1 ipsum dolor sit amet, consectetur adipisicing elit. Ea, harum. Tempore consequatur sint aliquam animi, asperiores maxime alias harum pariatur!' },
+                        { id: 2, comment: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ullam sint, ipsum vitae modi, cum? Asperiores, itaque labore, eveniet odio sapiente perferendis aliquid omnis quibusdam voluptate et ducimus incidunt, praesentium.' }
                     ]
         }
     }
 ];
 
 var Comment = React.createClass({
-    onClickLocal: function() {
-        this.props.onClickProp( this.props.commentIdx );
-    },
     render: function() {
         return (
             <div className="comment">
                 <small>Comment</small>
-                <span className="remove" onClick={this.onClickLocal}>x</span>
+                <span className="remove" onClick={this.props.onClickDelete}>x</span>
                 {this.props.children}
             </div>
         );
@@ -62,17 +67,11 @@ var Comment = React.createClass({
 });
 
 var CommentList = React.createClass({
-    onClickHere: function( commentIdx ) {
-        var comments = this.state.comments.splice( commentIdx,1 );
-        this.setState( { comments: this.state.comments } );
-    },
-    getInitialState: function() {
-        return { comments: this.props.list.comments };
-    },
     render: function() {
         var that = this;
-        var commentNodes = this.state.comments.map( function( comment, idx ) {
-            return <Comment commentIdx={idx} onClickProp={that.onClickHere}>{comment.comment}</Comment>
+
+        var commentNodes = this.props.list.comments.map( function( comment ) {
+            return <Comment key={comment.id} onClickDelete={that.props.onClickDelete.bind(null, comment)}>{comment.comment}</Comment>
         });
 
         return (
@@ -85,19 +84,22 @@ var CommentList = React.createClass({
 });
 
 var CommentForm = React.createClass({
-    onSubmitLocal: function() {
-        var comment = this.refs.comment.getDOMNode().value.trim();
-        if ( !!comment ) {
-            this.refs.comment.getDOMNode().value = '';
-            this.props.onSubmitProp( comment );
-        }
+    getInitialState: function () {
+        return { comment: '' };
+    },
+    handleSubmit: function(event) {
+        this.props.onSave(this.state);
+        this.setState({ comment: '' });
         return false;
+    },
+    handleCommentChange: function (event) {
+        this.setState({ comment: event.target.value });
     },
     render: function() {
         return (
-            <form className="comment-form" onSubmit={this.onSubmitLocal}>
+            <form className="comment-form" onSubmit={this.handleSubmit}>
                 <h2><small>CommentForm</small> {this.props.form}</h2>
-                <textarea ref="comment"></textarea>
+                <textarea ref="comment" value={this.state.comment} onChange={this.handleCommentChange}></textarea>
                 <input type="submit" value="Submit Now" />
             </form>
         );
@@ -105,39 +107,52 @@ var CommentForm = React.createClass({
 });
 
 var CommentBox = React.createClass({
-    onSubmitHere: function( comment ) {
-        this.state.list.comments.unshift({ comment: comment });
-        this.setState( { "list": this.state.list } );
-    },
-    getInitialState: function() {
-        return { list : this.props.item.list }
-    },
     render: function() {
         return (
             <div className="comment-box">
-                <h2><small>CommentBox</small> {this.props.item.box}</h2>
-                <CommentForm form={this.props.item.form} onSubmitProp={this.onSubmitHere}/>
-                <CommentList list={this.state.list} />
+                <h2><small>CommentBox</small> {this.props.section.box}</h2>
+                <CommentForm form={this.props.section.form} onSave={this.handleAddComment}/>
+                <CommentList list={this.props.section.list} onClickDelete={this.handleDeleteComment}/>
             </div>
         );
+    },
+    handleDeleteComment: function (comment) {
+        this.props.onDeleteComment(comment);
+    },
+    handleAddComment: function (comment) {
+        this.props.onAddComment(comment);
     }
 });
 
 var Wrapper = React.createClass({
     getInitialState: function() {
-        return { items: everybody };
+        return { sections: sections };
     },
     render: function() {
+        var that = this;
 
-        var commentNodes = this.state.items.map(function( item ) {
-            return <CommentBox item={item} />;
+        var commentNodes = this.state.sections.map(function( section ) {
+            return <CommentBox key={section.id} section={section} onAddComment={that.handleAddSectionComment.bind(that, section)} onDeleteComment={that.handleDeleteSectionComment.bind(that, section)}/>;
         });
 
-        return (
-            <div>
-                {commentNodes}
-            </div>
-        );
+        return <div> {commentNodes} </div>;
+    },
+    handleAddSectionComment: function (section, comment) {
+        var state = this.state,
+            section = _(this.state.sections).findWhere({ id: section.id }); // I could use the passed section, but prefer to get the actual from the state
+
+        section.list.comments.unshift({ id: nextId++, comment: comment });
+
+        this.setState( state );
+    },
+    handleDeleteSectionComment: function (section, comment) {
+        var state = this.state,
+            section = _(this.state.sections).findWhere({ id: section.id }), // I could use the passed section, but prefer to get the actual from the state
+            commentIdx = section.list.comments.indexOf(comment);
+
+        section.list.comments.splice( commentIdx, 1 );
+
+        this.setState( state );
     }
 });
 
@@ -147,3 +162,4 @@ React.renderComponent(
 );
 </script>
 </html>
+
