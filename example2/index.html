@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React - Example 2</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="http://fb.me/react-0.10.0.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row" id="wrapper"></div>
+</div>
+<script type="text/jsx">
+/** @jsx React.DOM */
+var sections = [
+    {   id: 1,
+        comment: "Level 1 - Comment #1",
+        form: "Form",
+        children: [
+            {
+                id: 1,
+                comment: "Level 2 - Comment #1",
+                form: "Form",
+                children: [
+                    {
+                        id: 1,
+                        comment: "Level 3 - Comment #1",
+                        form: "Form",
+                        children: []
+                    },
+                    {
+                        id: 2,
+                        comment: "Level 3 - Comment #2",
+                        form: "Form",
+                        children: []
+                    },
+                    {
+                        id: 3,
+                        comment: "Level 3 - Comment #3",
+                        form: "Form",
+                        children: [
+                            {
+                                id: 1,
+                                comment: "Level 4 - Comment #1",
+                                form: "Form",
+                                children: []
+                            },
+                            {
+                                id: 2,
+                                comment: "Level 4 - Comment #2",
+                                form: "Form",
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                comment: "Level 1 - Comment #2",
+                form: "Form",
+                children: [
+                    {
+                        id: 1,
+                        comment: "Level 2 - Comment #1",
+                        form: "Form",
+                        children: [
+                            {
+                                id: 1,
+                                comment: "Level 3 - Comment #1",
+                                form: "Form",
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        comment: "Level 2 - Comment #2",
+                        form: "Form",
+                        children: []
+                    },
+                    {
+                        id: 3,
+                        comment: "Level 2 - Comment #3",
+                        form: "Form",
+                        children: [
+                            {
+                                id: 1,
+                                comment: "Level 3 - Comment #1",
+                                form: "Form",
+                                children: []
+                            },
+                            {
+                                id: 2,
+                                comment: "Level 3 - Comment #2",
+                                form: "Form",
+                                children: []
+                            },
+                            {
+                                id: 3,
+                                comment: "Level 3 - Comment #3",
+                                form: "Form",
+                                children: []
+                            },
+                            {
+                                id: 4,
+                                comment: "Level 3 - Comment #4",
+                                form: "Form",
+                                children: [
+                                    {
+                                        id: 1,
+                                        comment: "Level 4 - Comment #1",
+                                        form: "Form",
+                                        children: []
+                                    },
+                                    {
+                                        id: 2,
+                                        comment: "Level 4 - Comment #2",
+                                        form: "Form",
+                                        children: []
+                                    },
+                                    {
+                                        id: 3,
+                                        comment: "Level 4 - Comment #3",
+                                        form: "Form",
+                                        children: []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+var PostBody = React.createClass({
+    render: function() {
+        return (
+            <div className="post-body">
+                <header>
+                    <span className="author">Palmer</span>&nbsp;
+                    <span className="posted">22.22.22</span>
+                </header>
+                <div className="post-inner">
+                    {this.props.item.comment}
+                </div>
+                <footer>
+                    <form  className="post-form">
+                        <span>{this.props.item.form}</span>
+                        <textarea name="" id=""></textarea>
+                        <input type="submit" value="Submit Now" />
+                    </form>
+                </footer>
+            </div>
+        );
+    }
+});
+
+var WayOne = React.createClass({
+    render: function(){
+        var children = this.props.item.children.map( function( item ) {
+            return <WayOne key={item.id} item={item} />;
+        });
+        return (
+            <div className="col-12">
+                <PostBody key={this.props.item.id} item={this.props.item} />
+                {children}
+            </div>
+        );
+    }
+});
+
+var WayTwo = React.createClass({
+    render: function(){
+        var children = this.props.item.children.map( function( item ) {
+            return <WayTwo key={item.id} item={item} />;
+        });
+        return (
+            <div className="wrapper">
+                <PostBody key={this.props.item.id} item={this.props.item} />
+                {children}
+            </div>
+        );
+    }
+});
+
+var Wrapper = React.createClass({
+    getInitialState: function() {
+        return { sections: sections };
+    },
+    render: function() {
+        var that = this;
+        var theNodes = this.state.sections.map(function( item ) {
+            return <WayOne key={item.id} item={item} />;
+        });
+
+        return <div> {theNodes} </div>;
+    }
+});
+
+React.renderComponent(
+    <Wrapper />,
+    document.getElementById("wrapper")
+);
+</script>
+</html>
+

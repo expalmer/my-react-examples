@@ -1,0 +1,87 @@
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+body {
+    margin: 20px auto;
+    font-size: 100%;
+    font-family: arial, verdana;
+    color: #333;
+}
+h1 { font-size: 1.4em; }
+h2 { font-size: 1.2em; }
+h3 { font-size: 1em; }
+small {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.row {
+    margin-left: -30px;
+    margin: 10px auto;
+    padding: 10px;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #d9d9d9;
+}
+.row:after, .row:before {
+    content: " ";
+    display: table;
+    clear: both;
+}
+.col-12 {
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-left: 30px;
+    width: 100%;
+}
+
+.post-body {
+    padding: 4px 10px;
+    font-size: 14px;
+    color: #999;
+}
+.author, .posted {
+    font-size: 12px;
+    color: #bbb;
+}
+.post-inner {
+    padding: 6px 0;
+}
+.post-form {
+
+}
+textarea {
+    width: 100%;
+    padding: 4px 6px;
+    border:solid 4px #ddd;
+    font-size: 0.9em;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+}
+input[type="submit"] {
+    float: right;
+    border:none;
+    padding: 8px 10px;
+    background: #c9c9c9;
+    font-size: 0.9em;
+    color: #fff;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    cursor:pointer;
+}
