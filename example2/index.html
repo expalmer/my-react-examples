@@ -7,204 +7,247 @@
     <script src="http://fb.me/react-0.10.0.js"></script>
     <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/lang/pt.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="row" id="wrapper"></div>
-</div>
 <script type="text/jsx">
 /** @jsx React.DOM */
+var ID = 1000;
+var accounts = [
+    {
+        id: ID++,
+        user: "@mizko",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/mizko/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@jackiesaik",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@brad_frost",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/brad_frost/48.jpg",
+        active: true
+    },
+    {
+        id: ID++,
+        user: "@uxceo",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/uxceo/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@adhamdannaway",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@jasongraphix",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/jasongraphix/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@tomaslau",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/tomaslau/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@madysondesigns",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/madysondesigns/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@axel",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/axel/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@chexee",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/chexee/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@juanpablob",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/juanpablob/48.jpg",
+        active: false
+    },
+    {
+        id: ID++,
+        user: "@liang",
+        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/liang/48.jpg",
+        active: false
+    }
+
+
+];
+
 var sections = [
-    {   id: 1,
-        comment: "Level 1 - Comment #1",
-        form: "Form",
-        children: [
-            {
-                id: 1,
-                comment: "Level 2 - Comment #1",
-                form: "Form",
-                children: [
-                    {
-                        id: 1,
-                        comment: "Level 3 - Comment #1",
-                        form: "Form",
-                        children: []
-                    },
-                    {
-                        id: 2,
-                        comment: "Level 3 - Comment #2",
-                        form: "Form",
-                        children: []
-                    },
-                    {
-                        id: 3,
-                        comment: "Level 3 - Comment #3",
-                        form: "Form",
-                        children: [
-                            {
-                                id: 1,
-                                comment: "Level 4 - Comment #1",
-                                form: "Form",
-                                children: []
-                            },
-                            {
-                                id: 2,
-                                comment: "Level 4 - Comment #2",
-                                form: "Form",
-                                children: []
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 2,
-                comment: "Level 1 - Comment #2",
-                form: "Form",
-                children: [
-                    {
-                        id: 1,
-                        comment: "Level 2 - Comment #1",
-                        form: "Form",
-                        children: [
-                            {
-                                id: 1,
-                                comment: "Level 3 - Comment #1",
-                                form: "Form",
-                                children: []
-                            }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        comment: "Level 2 - Comment #2",
-                        form: "Form",
-                        children: []
-                    },
-                    {
-                        id: 3,
-                        comment: "Level 2 - Comment #3",
-                        form: "Form",
-                        children: [
-                            {
-                                id: 1,
-                                comment: "Level 3 - Comment #1",
-                                form: "Form",
-                                children: []
-                            },
-                            {
-                                id: 2,
-                                comment: "Level 3 - Comment #2",
-                                form: "Form",
-                                children: []
-                            },
-                            {
-                                id: 3,
-                                comment: "Level 3 - Comment #3",
-                                form: "Form",
-                                children: []
-                            },
-                            {
-                                id: 4,
-                                comment: "Level 3 - Comment #4",
-                                form: "Form",
-                                children: [
-                                    {
-                                        id: 1,
-                                        comment: "Level 4 - Comment #1",
-                                        form: "Form",
-                                        children: []
-                                    },
-                                    {
-                                        id: 2,
-                                        comment: "Level 4 - Comment #2",
-                                        form: "Form",
-                                        children: []
-                                    },
-                                    {
-                                        id: 3,
-                                        comment: "Level 4 - Comment #3",
-                                        form: "Form",
-                                        children: []
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+    {
+        id: 1,
+        author: accounts[0],
+        comment: "Isaac Schlueter talk on Node roadmap to reach Node.js 1.0. A lot of great stuff will come! So dive into that huge video! This is from the ”Road to Node.js v1.0” event where Isaac Schlueter and Bert Belder talked about what’s coming in Node.js v1.0. Here Isaac dives into the state of Node, what will be improved in Nodejs v1.0 and some of the philosophy guiding Node.js development.",
+        date: new Date(),
+        children: [{
+            id: 1,
+            author: accounts[2],
+            comment: "Express – the most popular web framework for Node – reached version 4.0 on the 9th of April, bringing with it a handful of backwards incompatible changes and general housekeeping. In this article, we'll cover the large changes introduced in Express 4 that you'll need to be aware of when upgrading: the new, more versatile routing system, the removal of Connect as a dependency, the removal of the app.configure() method and a new generator for Express 4 applications.",
+            date: new Date(),
+            children: []
+        }]
     }
 ];
 
 var PostBody = React.createClass({
+    getInitialState: function() {
+        return { comment: ''};
+    },
     render: function() {
+        var posted = moment(this.props.item.date).format('dddd, MMMM Do YYYY, h:mm:ss a');
         return (
             <div className="post-body">
                 <header>
-                    <span className="author">Palmer</span>&nbsp;
-                    <span className="posted">22.22.22</span>
+                    <img className="post-avatar avatar-img" src={this.props.item.author.avatar} alt={this.props.item.author.user} />
+                    <span className="post-user">{this.props.item.author.user}</span>
+                    <span className="post-date">{posted}</span>
                 </header>
                 <div className="post-inner">
-                    {this.props.item.comment}
+                    <p className="post-comment">{this.props.item.comment}</p>
                 </div>
                 <footer>
-                    <form  className="post-form">
-                        <span>{this.props.item.form}</span>
-                        <textarea name="" id=""></textarea>
-                        <input type="submit" value="Submit Now" />
+                    <form onSubmit={this.onSubmitHandler} className="post-form">
+                        <textarea value={this.state.comment} ref={this.state.comment} onChange={this.onChangeHandler}></textarea>
+                        <input type="submit" value="Comment Now" />
                     </form>
                 </footer>
             </div>
         );
+    },
+    onChangeHandler: function( event ) {
+        this.setState( { comment: event.target.value });
+    },
+    onSubmitHandler: function() {
+        if ( this.state.comment ) {
+            this.props.onAddChild( this.state.comment );
+            this.setState( { "comment": "" });
+        }
+        return false;
     }
 });
 
-var WayOne = React.createClass({
+var PostWrapper = React.createClass({
+    getInitialState: function() {
+        return { item: this.props.item };
+    },
     render: function(){
-        var children = this.props.item.children.map( function( item ) {
-            return <WayOne key={item.id} item={item} />;
+        var that = this;
+        var childrenNodes = this.state.item.children.map( function( item ) {
+            return <PostWrapper key={item.id} item={item} user={that.props.user} />;
         });
         return (
             <div className="col-12">
-                <PostBody key={this.props.item.id} item={this.props.item} />
-                {children}
+                <PostBody
+                    key={this.state.item.id}
+                    item={this.state.item}
+                    onAddChild={this.addChild}/>
+
+                {childrenNodes}
             </div>
         );
+    },
+    addChild: function( comment ) {
+        var state = this.state;
+        var a = {
+            id: ID++,
+            author: this.props.user,
+            comment: comment,
+            date: new Date(),
+            children: []
+        };
+        this.state.item.children.unshift( a );
+        this.setState( state );
     }
 });
 
-var WayTwo = React.createClass({
-    render: function(){
-        var children = this.props.item.children.map( function( item ) {
-            return <WayTwo key={item.id} item={item} />;
-        });
+var Avatar = React.createClass({
+    render:function() {
+        var active = this.props.account.active ? "active" : "";
+        var main = active ? this.props.account.user : "";
         return (
-            <div className="wrapper">
-                <PostBody key={this.props.item.id} item={this.props.item} />
-                {children}
+            <div className={"avatar " + active } onClick={this.onClickHandle}>
+                <img className="avatar-img" src={this.props.account.avatar} alt={this.props.account.user} />
+                <span>{this.props.account.user}</span>
             </div>
         );
+    },
+    onClickHandle: function() {
+        this.props.onChangeAccount( this.props.account.id );
     }
 });
+
 
 var Wrapper = React.createClass({
     getInitialState: function() {
-        return { sections: sections };
+        return {
+            sections: sections,
+            accounts: accounts,
+            user: {}
+        };
+    },
+    componentWillMount: function() {
+        var user = _(this.state.accounts).findWhere({ active: true });
+        this.setState( { user : user } );
     },
     render: function() {
         var that = this;
         var theNodes = this.state.sections.map(function( item ) {
-            return <WayOne key={item.id} item={item} />;
+                return <PostWrapper key={item.id} item={item} user={that.state.user}/>;
         });
+        var avatarNodes = this.state.accounts.map(function( account ) {
+                return <Avatar key={account.id} account={account} onChangeAccount={that.changeAccount}/>;
+        });
+        return (
+            <div className="container">
+                <div className="avatar-w">
+                    {avatarNodes}
+                </div>
+                <div className="limiter">
+                    <div className="row">
+                        {theNodes}
+                    </div>
+                </div>
+            </div>
+        );
+    },
+    changeAccount: function( idx ) {
 
-        return <div> {theNodes} </div>;
+        var state = this.state;
+        var accounts = this.state.accounts.map( function( account ) {
+            account.active = account.id == idx ? true : false;
+            return account;
+        });
+        var user = _(this.state.accounts).findWhere({ active: true });
+
+        this.state.user = user;
+        this.state.accounts = accounts;
+
+        this.setState( state );
+
     }
 });
 
 React.renderComponent(
     <Wrapper />,
-    document.getElementById("wrapper")
+    document.body
 );
 </script>
 </html>

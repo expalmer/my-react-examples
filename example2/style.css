@@ -22,6 +22,9 @@ small {
 
 .container {
     margin: 0 auto;
+}
+.limiter {
+    margin: 0 auto;
     max-width: 600px;
 }
 
@@ -41,28 +44,50 @@ small {
     display: table;
     clear: both;
 }
-.col-12 {
+.col-12, .col-3 {
     float: left;
     position: relative;
     min-height: 1px;
-    padding-left: 30px;
-    width: 100%;
+
 }
+.col-12 { width: 100%; padding-left: 30px;}
+.col-3 { width: 25%; }
 
 .post-body {
     padding: 4px 10px;
     font-size: 14px;
     color: #999;
 }
-.author, .posted {
-    font-size: 12px;
-    color: #bbb;
+.post-user {
+    margin-left: 12px;
+    font-weight: 900;
+    color: #101010;
+}
+.post-date {
+    margin-left: 12px;
 }
 .post-inner {
-    padding: 6px 0;
+    position: relative;
+    overflow: hidden;
 }
-.post-form {
-
+.post-inner:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "\201C";
+    color: #d9d9d9;
+    font-size: 58px;
+}
+.post-inner:after {
+    position: absolute;
+    bottom: -23px;
+    right: 0;
+    content: "\201D";
+    color: #d9d9d9;
+    font-size: 58px;
+}
+.post-comment {
+    padding: 20px 14px;
 }
 textarea {
     width: 100%;
@@ -84,4 +109,57 @@ input[type="submit"] {
        -moz-border-radius: 4px;
             border-radius: 4px;
     cursor:pointer;
+}
+
+.avatar-w {
+    padding: 10px auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background: rgba(255,250,255,0.7);
+    z-index: 99;
+    overflow-y: auto;
+}
+
+.avatar {
+    display:inline-block;
+    float:left;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    color: #999;
+    -webkit-transition: all .125s linear;
+    transition: all .125s linear;
+}
+.avatar span {
+    display: block;
+    font-size: 0.875em;
+}
+.avatar:hover {
+    background: #CADEFF;
+}
+.avatar.active {
+    -webkit-transition: all .125s linear;
+    transition: all .125s linear;
+    background: #3d7de6;
+    color: #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.25),0 0 2px 0 rgba(0,0,0,0.1),inset 0 -1px 0 0 rgba(0,0,0,0.05);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.25),0 0 2px 0 rgba(0,0,0,0.1),inset 0 -1px 0 0 rgba(0,0,0,0.05);
+}
+
+.avatar-img {
+    max-width: 100%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    border: solid 3px #FFF;
+    display: inline-block;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.25);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.25);
+    vertical-align: middle;
 }
