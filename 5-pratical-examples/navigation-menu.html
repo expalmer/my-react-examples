@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React - Pratical Example - Navigation Menu</title>
+    <style>
+        body {
+            margin: 100px auto;
+            font-family: arial;
+            font-size: 100%;
+            text-align: center;
+        }
+        ul li {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            border: solid 2px #333;
+            -webkit-border-radius: 4px;
+               -moz-border-radius: 4px;
+                    border-radius: 4px;
+            color: #333;
+            cursor: pointer;
+            -webkit-transition: -webkit-transform 200ms;
+               -moz-transition: -moz-transform 200ms;
+                    transition: transform 200ms;
+            -webkit-transform: scale(0.95);
+               -moz-transform: scale(0.95);
+                    transform: scale(0.95);
+        }
+        ul li:hover, .focused {
+            background: #333;
+            color: #fff;
+            -webkit-transform: scale(1);
+               -moz-transform: scale(1);
+                    transform: scale(1);
+        }
+    </style>
+    <script src="http://fb.me/react-0.10.0.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+</head>
+<body>
+<script type="text/jsx">
+
+/** @jsx React.DOM */
+var MenuExample = React.createClass({
+
+    getInitialState: function(){
+        return { focused: 0 };
+    },
+
+    clicked: function(index){
+
+        this.setState({focused: index});
+    },
+
+    render: function() {
+
+        var that = this;
+
+        var menuNodes = this.props.items.map( function( menu, index ) {
+            var style = '';
+            if( that.state.focused === index ) {
+                style = 'focused';
+            }
+            return <li className={style} onClick={that.clicked.bind(that, index)}>{menu}</li>;
+        });
+
+        return (
+            <div>
+                <ul>
+                    {menuNodes}
+                </ul>
+
+                <h3>{this.props.items[this.state.focused]}</h3>
+            </div>
+        );
+
+    }
+});
+
+React.renderComponent(
+    <MenuExample items={ ['Home', 'Services', 'About', 'Contact us'] } />,
+    document.body
+);
+</script>
+</html>
+

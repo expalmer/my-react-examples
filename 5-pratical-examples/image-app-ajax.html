@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React - Pratical Example - Image app with Ajax</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            margin: 100px auto;
+            font-family: arial;
+            font-size: 100%;
+            text-align: center;
+        }
+        .picture{
+            display: inline-block;
+            margin: 5px;
+            cursor:pointer;
+            position: relative;
+        }
+        .pictures, .favorites {
+            white-space: nowrap;
+            overflow-y: auto;
+            margin-bottom: 30px;
+            height: 240px;
+            background: #000;
+        }
+        .picture.favorite:after{
+            content: '❤';
+            position: absolute;
+            font-size: 80px;
+            line-height: 200px;
+            color: #FF224D;
+            width: 100%;
+            text-align: center;
+            left: 0;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+        }
+
+
+    </style>
+    <script src="http://fb.me/react-0.10.0.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/jsx">
+
+/** @jsx React.DOM */
+
+var Picture = React.createClass({
+
+    clickHandler: function(){
+
+        this.props.onClick( this.props.ref );
+    },
+
+    render: function(){
+
+        var cls = 'picture ' + (this.props.favorite ? 'favorite' : '');
+
+        return (
+
+            <div className={cls} onClick={this.clickHandler}>
+                <img src={this.props.src} width="200" title={this.props.title} />
+            </div>
+
+        );
+
+    }
+
+});
+
+var PictureList = React.createClass({
+
+    getInitialState: function(){
+
+        return { pictures: [], favorites: [] };
+    },
+
+    componentDidMount: function(){
+
+
+        var that = this;
+
+        var url = 'https://api.instagram.com/v1/media/popular?client_id=' + this.props.apiKey + '&callback=?';
+
+        $.getJSON(url, function(result){
+
+            if(!result || !result.data || !result.data.length){
+                return;
+            }
+
+            var pictures = result.data.map(function(p){
+
+                return {
+                    id: p.id,
+                    url: p.link,
+                    src: p.images.low_resolution.url,
+                    title: p.caption ? p.caption.text : '',
+                    favorite: false
+                };
+
+            });
+
+            that.setState({ pictures: pictures });
+
+        });
+
+    },
+
+    pictureClick: function( id ){
+
+        var favorites = this.state.favorites;
+        var pictures = this.state.pictures;
+        var len = pictures.length;
+
+        for(var i = 0; i < len; i += 1){
+
+            if(pictures[i].id == id) {
+
+                if( pictures[i].favorite ) {
+                    return this.favoriteClick( id );
+                }
+
+                favorites.push(pictures[i]);
+
+                pictures[i].favorite = true;
+
+                break;
+            }
+
+        }
+
+        this.setState({pictures: pictures, favorites: favorites});
+
+    },
+
+    favoriteClick: function( id ) {
+
+        var favorites = this.state.favorites;
+        var pictures  = this.state.pictures;
+        var len = favorites.length;
+
+        for(var i = 0; i < len; i += 1){
+            if(favorites[i].id == id) break;
+        }
+
+        favorites.splice(i, 1);
+
+        for(i = 0; i < pictures.length; i++){
+            if(pictures[i].id == id) {
+                pictures[i].favorite = false;
+                break;
+            }
+        }
+
+        this.setState({pictures: pictures, favorites: favorites});
+
+    },
+
+    render: function() {
+
+        var that = this;
+
+        var pictures = this.state.pictures.map(function(p){
+            return <Picture ref={p.id} src={p.src} title={p.title} favorite={p.favorite} onClick={that.pictureClick} />
+        });
+
+        if(!pictures.length){
+            pictures = <p>Loading images..</p>;
+        }
+
+        var favorites = this.state.favorites.map(function(p){
+            return <Picture ref={p.id} src={p.src} title={p.title} favorite={true} onClick={that.favoriteClick} />
+        });
+
+        if(!favorites.length){
+            favorites = <p>Click an image to mark it as a favorite.</p>;
+        }
+
+        return (
+
+            <div>
+                <h1>Popular Instagram pics</h1>
+                <div className="pictures"> {pictures} </div>
+
+                <h1>Your favorites</h1>
+                <div className="favorites"> {favorites} </div>
+            </div>
+
+        );
+    }
+});
+
+React.renderComponent(
+    <PictureList apiKey="6c630ecd733c41bfa3e7fc50faabc924" />,
+    document.body
+);
+</script>
+</html>
+

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React - Pratical Example - Order form</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            margin: 100px auto;
+            font-family: arial;
+            font-size: 100%;
+            text-align: center;
+        }
+        .services {
+            margin: 0 auto;
+            max-width: 400px;
+        }
+        p {
+            display: block;
+            position: relative;
+            margin: 2px auto;
+            padding: 20px;
+            border: solid 2px #fff;
+            background: #f1f1f1;
+            font-size: 0.9em;
+            color: #333;
+            cursor: pointer;
+            text-align: left;
+            -webkit-border-radius: 4px;
+               -moz-border-radius: 4px;
+                    border-radius: 4px;
+            -webkit-transition: 0.3s;
+               -moz-transition: 0.3s;
+                    transition: 0.3s;
+        }
+        p b {
+            float: right;
+        }
+        .active {
+            background: #111;
+            color: #fff;
+        }
+        .total {
+            margin: 2px auto;
+            padding: 20px;
+            background: #fff;
+            color: #000;
+            border: solid 2px #000;
+        }
+
+
+    </style>
+    <script src="http://fb.me/react-0.10.0.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+</head>
+<body>
+<script type="text/jsx">
+
+/** @jsx React.DOM */
+
+var Service = React.createClass({
+
+    getInitialState: function(){
+        return { active: false };
+    },
+
+    clickHandler: function (){
+
+        var active = !this.state.active;
+
+        this.setState({ active: active });
+
+        this.props.addTotal( active ? this.props.price : -this.props.price );
+
+    },
+
+    render: function(){
+
+        return  <p className={ this.state.active ? 'active' : '' } onClick={this.clickHandler}>
+                    {this.props.name} <b>${this.props.price.toFixed(2)}</b>
+                </p>;
+
+    }
+
+});
+
+var ServiceChooser = React.createClass({
+
+    getInitialState: function(){
+        return { total: 0 };
+    },
+
+    addTotal: function( price ){
+        this.setState( { total: this.state.total + price } );
+    },
+
+    render: function() {
+
+        var that = this;
+
+        var services = this.props.items.map(function(s){
+            return <Service name={s.name} price={s.price} active={s.active} addTotal={that.addTotal} />;
+        });
+
+        return <div>
+                    <h1>Our services</h1>
+
+                    <div className="services">
+                        {services}
+                        <p className="total">Total <b>${this.state.total.toFixed(2)}</b></p>
+                    </div>
+
+                </div>;
+
+    }
+});
+
+
+
+var services = [
+    { name: 'Web Development', price: 300 },
+    { name: 'Design', price: 400 },
+    { name: 'Integration', price: 250 },
+    { name: 'Training', price: 220 }
+];
+
+React.renderComponent(
+    <ServiceChooser items={ services } />,
+    document.body
+);
+</script>
+</html>
+
