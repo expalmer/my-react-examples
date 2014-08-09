@@ -118,20 +118,18 @@ var Box = React.createClass({
             state.items.push( state.comment );
             state.comment = '';
             this.setState( state );
-            this.scroll();
         }
         return false;
 
     },
 
-    scroll: function() {
+    componentDidUpdate: function( a, b ) {
 
         var node = this.getDOMNode().childNodes;
-        for( var x in node) {
+        for ( var x in node ) {
             if ( node[x].className === 'conversation' ) {
-                setTimeout( function( x ) {
-                    node[x].scrollTop = node[x].scrollHeight;
-                }.bind(this, x), 100);
+                node[x].scrollTop = node[x].scrollHeight;
+                return false;
             }
         }
     },
